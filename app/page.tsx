@@ -46,6 +46,7 @@ export default function Home() {
 
   const [timeLeft, setTimeLeft] = useState(ROUND_TIME);
   const [roundStats, setRoundStats] = useState<GameStats | null>(null);
+  const [roundKey, setRoundKey] = useState(0);
 
   useEffect(() => {
     if (!token) router.push("/login");
@@ -65,15 +66,11 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(id);
-  }, [roundStats]);
+  }, [roundStats, roundKey]);
 
   useEffect(() => {
     if (timeLeft === 0 && !roundStats) {
-      addRound({
-        wpm: liveWpm,
-        accuracy: liveAccuracy,
-        timeSeconds: ROUND_TIME,
-      });
+      addRound({ wpm: liveWpm, accuracy: liveAccuracy, timeSeconds: ROUND_TIME });
     }
   }, [timeLeft, roundStats, addRound, liveWpm, liveAccuracy]);
 
@@ -86,22 +83,18 @@ export default function Home() {
   const handlePlayAgain = () => {
     setRoundStats(null);
     setTimeLeft(ROUND_TIME);
+    setRoundKey((k) => k + 1);
     resetLive();
   };
 
-  const timeUpStats: GameStats = {
-    wpm: liveWpm,
-    accuracy: liveAccuracy,
-    timeSeconds: ROUND_TIME,
-  };
-  const displayStats = roundStats ?? (timeLeft === 0 ? timeUpStats : null);
+  const timeUpStats: GameStats = { wpm: liveWpm, accuracy: liveAccuracy, timeSeconds: ROUND_TIME };
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center bg-zinc-950">
       <h1 className="text-3xl font-bold mb-6 text-center">Typing Challenge</h1>
       <section className="flex w-full max-w-4xl flex-col items-center gap-8 px-4">
-        {displayStats ? (
-          <RoundEnd stats={displayStats} onPlayAgain={handlePlayAgain} />
+        {roundStats || timeLeft === 0 ? (
+          <RoundEnd stats={roundStats ?? timeUpStats} onPlayAgain={handlePlayAgain} />
         ) : (
           <>
             <StatsBar timeLeft={timeLeft} />
