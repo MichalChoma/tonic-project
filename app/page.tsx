@@ -1,9 +1,7 @@
 "use client";
 
-import { useAuthStore } from "@/store/authStore";
 import { useGameStore } from "@/store/gameStore";
 import { GameStats } from "@/lib/types";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TypingInput } from "./components/TypingInput";
 import { StatsBar } from "./components/StatsBar";
@@ -40,17 +38,11 @@ const sentences = [
 ];
 
 export default function Home() {
-  const router = useRouter();
-  const token = useAuthStore(({ token }) => token);
   const { addRound, resetLive, liveWpm, liveAccuracy } = useGameStore();
 
   const [timeLeft, setTimeLeft] = useState(ROUND_TIME);
   const [roundStats, setRoundStats] = useState<GameStats | null>(null);
   const [roundKey, setRoundKey] = useState(0);
-
-  useEffect(() => {
-    if (!token) router.push("/login");
-  }, [token, router]);
 
   useEffect(() => {
     if (roundStats) return;
