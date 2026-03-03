@@ -29,10 +29,11 @@ export function LoginForm() {
       className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-8"
     >
       <div className="space-y-1">
-        <label className="text-xs font-medium uppercase tracking-widest text-zinc-400">
+        <label htmlFor="username" className="text-xs font-medium uppercase tracking-widest text-zinc-400">
           Username
         </label>
         <input
+          id="username"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -43,10 +44,11 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium uppercase tracking-widest text-zinc-400">
+        <label htmlFor="password" className="text-xs font-medium uppercase tracking-widest text-zinc-400">
           Password
         </label>
         <input
+          id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
