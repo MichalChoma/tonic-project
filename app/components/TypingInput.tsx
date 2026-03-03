@@ -15,7 +15,7 @@ export const TypingInput = ({ sentence, onRoundEnd }: Props) => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTyped, setTotalTyped] = useState(0);
   const [correctTyped, setCorrectTyped] = useState(0);
-  const { setLiveProgress } = useGameStore();
+  const { setLiveProgress, setLiveInput } = useGameStore();
 
   useEffect(() => {
     setInput("");
@@ -55,6 +55,7 @@ export const TypingInput = ({ sentence, onRoundEnd }: Props) => {
     }
 
     setInput(value);
+    setLiveInput(value);
 
     const isComplete = value === sentence;
     if (isComplete) {
@@ -67,8 +68,8 @@ export const TypingInput = ({ sentence, onRoundEnd }: Props) => {
   };
 
   return (
-    <div className="w-full max-w-sm space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
-      <p className="font-mono text-lg leading-relaxed tracking-wide">
+    <div className="w-full max-w-md space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
+      <p className="font-mono text-lg leading-relaxed tracking-wide text-center">
         {sentence.split("").map((char, i) => {
           let color = "text-zinc-500";
           if (i < input.length) {
